@@ -1,0 +1,25 @@
+name: compile
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download compiler
+        uses: actions/download-artifact@v4
+        id: download-compiler
+        with:
+          name: chlasm.zip
+          github-token: ${{ secrets.GH_CHL_PAT }}
+          repository: Daniels118/blackandwhite
+          run-id: 10540693786
+      - name: Extract compiler
+        run: unzip ${{steps.download-compiler.outputs.download-path}}/chlasm.zip -d /tmp/
+      - name: Compile
+        run: $JAVA_HOME_11_X64/bin/java -cp /tmp/chlasm/chlasm.jar it.ld.bw.chl.Main -compile -p project.txt -o build/challenge.chl
+      - uses: actions/upload-artifact@v4
+        with:
+          file: challenge.chl
