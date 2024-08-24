@@ -1,5 +1,7 @@
 challenge LandControlAll
 
+//Simple test
+
 begin script EnterCitadelOnGameStart
 	MyCitadel = 0
 start
