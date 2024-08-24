@@ -12,7 +12,7 @@ jobs:
         uses: actions/download-artifact@v4
         id: download-compiler
         with:
-          name: chlasm.zip
+          name: chlasm
           github-token: ${{ secrets.GH_CHL_PAT }}
           repository: Daniels118/blackandwhite
           run-id: 10540693786
