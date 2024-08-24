@@ -1,0 +1,50 @@
+name: compile
+on:
+  push:
+    branches:
+      - main
+      - test
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download compiler
+        uses: actions/download-artifact@v4
+        id: download-compiler
+        with:
+          name: chlasm
+          github-token: ${{ secrets.GH_CHL_PAT }}
+          repository: Daniels118/blackandwhite
+          run-id: 10540693786
+      - name: Compile
+        run: $JAVA_HOME_11_X64/bin/java -cp chlasm.jar it.ld.bw.chl.Main -compile -p project.txt -o build/challenge.chl
+      #- name: Upload artifact
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    path: build/challenge.chl
+      - id: get-commit-id
+        run: |
+          id=$(echo ${{github.event.after}} | cut -c1-6)
+          echo "::set-output name=id::$id"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v.${{ steps.get-commit-id.outputs.id }}
+          release_name: Release ${{ steps.get-commit-id.outputs.id }}
+          body: ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/challenge.chl
+          asset_name: challenge.chl
+          asset_content_type: application/octet-stream
