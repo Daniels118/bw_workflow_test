@@ -17,5 +17,8 @@ jobs:
           github-token: ${{ secrets.GH_CHL_PAT }}
           repository: Daniels118/blackandwhite
           run-id: 10540693786
-      - name: Extract compiler
-        run: ls -l ${{steps.download-compiler.outputs.download-path}}
+      - name: Compile
+        run: $JAVA_HOME_11_X64/bin/java -cp chlasm.jar it.ld.bw.chl.Main -compile -p project.txt -o build/challenge.chl
+      - uses: actions/upload-artifact@v4
+        with:
+          file: build/challenge.chl
