@@ -1,0 +1,15 @@
+challenge LandControlAll
+
+begin script EnterCitadelOnGameStart
+	MyCitadel = 0
+start
+	build building at [1915.05,2508.89] desire 1.0
+	MyCitadel = get CITADEL at [1915.05,2508.89] radius 5
+	BUILT of MyCitadel = 1
+	enter temple
+end script EnterCitadelOnGameStart
+
+begin script LandControlAll
+start
+	run background script EnterCitadelOnGameStart
+end script LandControlAll
