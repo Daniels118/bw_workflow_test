@@ -18,4 +18,4 @@ jobs:
           repository: Daniels118/blackandwhite
           run-id: 10540693786
       - name: Extract compiler
-        run: ls -l ${{steps.download-compiler.outputs.download-path}}/chlasm.zip
+        run: ls -l ${{steps.download-compiler.outputs.download-path}}
