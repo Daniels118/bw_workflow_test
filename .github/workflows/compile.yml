@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - test
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,9 +18,4 @@ jobs:
           repository: Daniels118/blackandwhite
           run-id: 10540693786
       - name: Extract compiler
-        run: unzip ${{steps.download-compiler.outputs.download-path}}/chlasm.zip -d /tmp/
-      - name: Compile
-        run: $JAVA_HOME_11_X64/bin/java -cp /tmp/chlasm/chlasm.jar it.ld.bw.chl.Main -compile -p project.txt -o build/challenge.chl
-      - uses: actions/upload-artifact@v4
-        with:
-          file: challenge.chl
+        run: ls -l ${{steps.download-compiler.outputs.download-path}}/chlasm.zip
