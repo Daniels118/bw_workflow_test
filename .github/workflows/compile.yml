@@ -19,6 +19,27 @@ jobs:
           run-id: 10540693786
       - name: Compile
         run: $JAVA_HOME_11_X64/bin/java -cp chlasm.jar it.ld.bw.chl.Main -compile -p project.txt -o build/challenge.chl
-      - uses: actions/upload-artifact@v4
+      #- name: Upload artifact
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    path: build/challenge.chl
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          path: build/challenge.chl
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/challenge.chl
+          asset_name: challenge.chl
+          asset_content_type: application/octet-stream
