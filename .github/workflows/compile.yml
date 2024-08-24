@@ -21,4 +21,4 @@ jobs:
         run: $JAVA_HOME_11_X64/bin/java -cp chlasm.jar it.ld.bw.chl.Main -compile -p project.txt -o build/challenge.chl
       - uses: actions/upload-artifact@v4
         with:
-          file: build/challenge.chl
+          path: build/challenge.chl
